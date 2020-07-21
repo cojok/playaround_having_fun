@@ -1,11 +1,10 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var initApp = require('../dist/app').default;
-var should = chai.should();
-var expect = chai.expect;
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const initApp = require('../dist/app').default;
+const expect = chai.expect;
 chai.use(chaiHttp);
-var Promise = require('bluebird');
-var chaiAsPromised = require('chai-as-promised');
+const Promise = require('bluebird');
+const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 describe('trades_test ', async function () {
@@ -94,14 +93,14 @@ describe('trades_test ', async function () {
       for (var i = 0; i < payload.length; i++) {
         event.push(payload[i]);
       }
-      Promise.mapSeries(event, (e) => {
+      Promise.each(event, (e) => {
         let eve = e;
         if (eve.request.method == 'DELETE') {
           return chai
             .request(server)
             .delete(eve.request.url)
-            .then((res) => {
-              return res;
+            .then(async (res) => {
+              return await res;
             })
             .catch((err) => {
               return err;
@@ -111,8 +110,8 @@ describe('trades_test ', async function () {
           return chai
             .request(server)
             .get(eve.request.url)
-            .then((res) => {
-              return res;
+            .then(async (res) => {
+              return await res;
             })
             .catch((err) => {
               return err;
@@ -124,8 +123,8 @@ describe('trades_test ', async function () {
             .post(eve.request.url)
             .set(eve.request.headers)
             .send(eve.request.body)
-            .then((res) => {
-              return res;
+            .then(async (res) => {
+              return await res;
             })
             .catch((err) => {
               return err;
@@ -137,8 +136,8 @@ describe('trades_test ', async function () {
             .put(eve.request.url)
             .set(eve.request.headers)
             .send(eve.request.body)
-            .then((res) => {
-              return res;
+            .then(async (res) => {
+              return await res;
             })
             .catch((err) => {
               return err;
@@ -146,6 +145,8 @@ describe('trades_test ', async function () {
         }
       })
         .then((results) => {
+          console.log('===THEN===');
+          console.log(results);
           for (let j = 0; j < results.length; j++) {
             let e = event[j];
 
