@@ -23,7 +23,7 @@ const addTrade = async (req, res) => {
     return res.status(201);
   } catch (e) {
     console.log(e);
-    return res.status(500).json('Could not save the trade!');
+    return res.status(400).json('Could not save the trade!');
   }
 };
 
